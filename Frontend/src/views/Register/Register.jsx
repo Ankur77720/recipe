@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import './Register.css'
+import axios from 'axios'
 
 const Register = () => {
 
@@ -7,9 +8,17 @@ const Register = () => {
     const [ email, setEmail ] = useState("")
     const [ password, setPassword ] = useState("")
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
 
+
+        const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/user/register`, {
+            username,email,password
+        },{
+            withCredentials:true
+        })
+
+        
     }
 
     return (

@@ -9,7 +9,7 @@ export async function createUser({ username, email, password }) {
     }
 
 
-    const isUserExist = await userModel.find({
+    const isUserExist = await userModel.findOne({
         $or: [
             {
                 username

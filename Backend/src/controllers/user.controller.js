@@ -11,12 +11,18 @@ export const registerUserController = async (req, res) => {
             username, email, password
         })
 
+        const token = user.generateToken()
+
+        res.cookie("token", token)
+
         return res.status(201).json({
             message: "user created successfully",
             user
         })
 
     } catch (err) {
+
+        console.log(err)
 
         res.status(500).json({
             message: "user not created",
