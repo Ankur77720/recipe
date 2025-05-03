@@ -1,11 +1,16 @@
 import { useState } from 'react'
 import AppRoutes from './routes/AppRoutes'
+import { store } from './redux/store'
+import { Provider } from 'react-redux'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [ count, setCount ] = useState(0)
 
   return (
-    <> <AppRoutes/>  </>
+
+    <Provider store={store}>
+      <AppRoutes />
+    </Provider>
   )
 }
 

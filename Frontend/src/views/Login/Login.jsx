@@ -1,0 +1,59 @@
+import React, { useState } from 'react'
+import '../Register/Register.css'
+import axios from 'axios'
+import { useDispatch } from 'react-redux'
+import { setUser } from '../../redux/features/user/user.feature'
+import { useNavigate } from 'react-router-dom'
+
+const Login = () => {
+
+    const [ username, setUsername ] = useState("")
+    const [ password, setPassword ] = useState("")
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
+
+
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+
+        const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/user/login`, {
+            username,password
+        },{
+            withCredentials:true
+        })
+
+        dispatch(setUser({
+            username: response.data.user.username,
+            email: response.data.user.email
+        }))
+
+        navigate("/home")
+    }
+
+    return (
+        <div className="auth-section">
+  
+        <form onSubmit={handleSubmit}>
+            <input
+                type="text"
+                placeholder="Username"
+                required value={username}
+                onChange={(e) => setUsername(e.target.value)}
+            />
+            <input
+                type="password"
+                placeholder="Password"
+                required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+            />
+
+            <button type="submit">Login</button>
+        </form>
+
+        </div>
+    )
+
+
+}
+export default Login
