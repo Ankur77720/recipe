@@ -1,25 +1,28 @@
 import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
 import axios from 'axios'
-import '../Register/Register.css'
+import ReactMarkdown from 'react-markdown'
+import './Home.css'
+
 
 const Home = () => {
     const user = useSelector((state) => state.user);
-    const [ingredient, setIngredient] = useState('');
-    const [ingredients, setIngredients] = useState([]);
-    const [isSubmitting, setIsSubmitting] = useState(false);
-    const [message, setMessage] = useState('');
+    const [ ingredient, setIngredient ] = useState('');
+    const [ ingredients, setIngredients ] = useState([]);
+    const [ isSubmitting, setIsSubmitting ] = useState(false);
+    const [ message, setMessage ] = useState('');
+    const [ recipe, setRecipe ] = useState(null)
 
     const handleAddIngredient = (e) => {
         e.preventDefault();
         if (ingredient.trim()) {
-            setIngredients([...ingredients, ingredient.trim()]);
+            setIngredients([ ...ingredients, ingredient.trim() ]);
             setIngredient('');
         }
     };
 
     const handleRemoveIngredient = (index) => {
-        const newIngredients = [...ingredients];
+        const newIngredients = [ ...ingredients ];
         newIngredients.splice(index, 1);
         setIngredients(newIngredients);
     };
@@ -32,16 +35,18 @@ const Home = () => {
 
         setIsSubmitting(true);
         setMessage('');
-        
+
         try {
             const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/recipe/ingredients`, {
-                ingredients 
+                ingredients
             }, {
                 withCredentials: true
             });
 
             console.log('Response from server:', response.data);
-            
+
+            setRecipe(response.data.recipe);
+
             setMessage('Ingredients submitted successfully!');
             setIngredients([]);
         } catch (error) {
@@ -51,80 +56,69 @@ const Home = () => {
             setIsSubmitting(false);
         }
     };
-    
+
     return (
-        <div className="auth-section">
-            <div style={{ width: '400px', maxWidth: '90%' }}>
+        <div className="home-section">
+            <div className="home-container">
                 {user.username ? <h1>Welcome, {user.username}!</h1> : <h1>Home</h1>}
-                
-                <div style={{ marginTop: '2rem' }}>
+
+                <div className="ingredients-section">
                     <h2>Add Ingredients</h2>
                     <p>Enter ingredients one by one and submit when done</p>
-                    
-                    <form onSubmit={handleAddIngredient} style={{ marginTop: '1rem' }}>
-                        <div style={{ display: 'flex', gap: '0.5rem' }}>
+
+                    <form onSubmit={handleAddIngredient}>
+                        <div className="ingredient-input">
                             <input
                                 type="text"
                                 value={ingredient}
                                 onChange={(e) => setIngredient(e.target.value)}
                                 placeholder="Enter an ingredient"
-                                style={{ flex: 1 }}
                             />
                             <button type="submit">Add</button>
                         </div>
                     </form>
-                    
+
                     {ingredients.length > 0 && (
-                        <div style={{ marginTop: '1.5rem' }}>
+                        <div className="ingredients-list">
                             <h3>My Ingredients:</h3>
-                            <ul style={{ listStyle: 'none', padding: 0, margin: '1rem 0' }}>
+                            <ul className="ingredient-items">
                                 {ingredients.map((item, index) => (
-                                    <li key={index} style={{ 
-                                        display: 'flex', 
-                                        justifyContent: 'space-between', 
-                                        alignItems: 'center',
-                                        padding: '0.5rem',
-                                        margin: '0.5rem 0',
-                                        backgroundColor: '#f5f5f5',
-                                        borderRadius: '0.5rem'
-                                    }}>
+                                    <li key={index} className="ingredient-item">
                                         {item}
-                                        <button 
+                                        <button
                                             onClick={() => handleRemoveIngredient(index)}
-                                            style={{ 
-                                                background: '#ff6b6b',
-                                                color: 'white',
-                                                border: 'none',
-                                                borderRadius: '0.35rem',
-                                                padding: '0.25rem 0.5rem',
-                                                cursor: 'pointer'
-                                            }}
+                                            className="remove-button"
                                         >
                                             Remove
                                         </button>
                                     </li>
                                 ))}
                             </ul>
-                            
-                            <button 
-                                onClick={handleSubmitIngredients} 
+
+                            <button
+                                onClick={handleSubmitIngredients}
                                 disabled={isSubmitting}
-                                style={{ width: '100%', marginTop: '1rem' }}
+                                className="submit-button"
                             >
                                 {isSubmitting ? 'Submitting...' : 'Submit Ingredients'}
                             </button>
                         </div>
                     )}
-                    
+
                     {message && (
-                        <div style={{ 
-                            marginTop: '1rem', 
-                            padding: '0.75rem', 
-                            backgroundColor: message.includes('success') ? '#d4edda' : '#f8d7da',
-                            color: message.includes('success') ? '#155724' : '#721c24',
-                            borderRadius: '0.5rem'
-                        }}>
+                        <div className={`message ${message.includes('success') ? 'success' : 'error'}`}>
                             {message}
+                        </div>
+                    )}
+                    
+                    {recipe && (
+                        <div className="recipe-container">
+                            <h2>Your Recipe</h2>
+                            <div className="markdown-content">
+                                <ReactMarkdown>
+                                    {recipe}
+                                </ReactMarkdown>
+                            </div>
                         </div>
                     )}
                 </div>

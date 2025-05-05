@@ -1,5 +1,4 @@
-// recipe.controller.js
-// Controller for handling recipe related operations
+import { getRecipeFromIngredients } from "../service/ai.service.js";
 
 export const submitIngredientsController = async (req, res) => {
     try {
@@ -15,13 +14,14 @@ export const submitIngredientsController = async (req, res) => {
 
         // Here you would typically save the ingredients to a database
         // For now, we'll just log them and return a success response
-        console.log("Received ingredients:", ingredients);
+        const recipe = await getRecipeFromIngredients(ingredients);
 
         // Return success response
         return res.status(200).json({
             success: true,
             message: "Ingredients received successfully",
-            ingredients
+            ingredients,
+            recipe
         });
     } catch (error) {
         console.error("Error in submitIngredientsController:", error);
