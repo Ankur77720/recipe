@@ -30,6 +30,12 @@ jobs:
         key: ${{ secrets.EC2_KEY }}
         script: |
           cd ~/recipe-app
+          # Kill all existing Docker containers
+          sudo docker kill $(sudo docker ps -q) || true
+          # Remove all containers to free allocated ports
+          sudo docker rm $(sudo docker ps -a -q) || true
+          # Check if port 3000 is in use by any process and kill it
+          sudo lsof -ti:3000 | xargs -r sudo kill -9
           sudo docker build -t my-app .
           sudo docker stop my-app || true
           sudo docker rm my-app || true
