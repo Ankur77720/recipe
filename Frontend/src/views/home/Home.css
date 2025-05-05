@@ -10,7 +10,7 @@
   margin-top: 2rem;
 }
 
-.home-section form, .home-section .message, .home-section .ingredients-list {
+.home-section form, .home-section .message, .home-section .ingredients-list, .home-section .diet-goal-selector {
   width: 400px;
 }
 
@@ -21,6 +21,32 @@
 }
 .ingredient-input input {
   flex: 1;
+}
+
+.diet-goal-selector {
+  margin-top: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.diet-goal-selector label {
+  font-weight: 500;
+}
+
+.diet-goal-dropdown {
+  padding: 0.5rem;
+  border-radius: 0.35rem;
+  border: 1px solid #ccc;
+  background-color: white;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.diet-goal-dropdown:focus {
+  outline: none;
+  border-color: #1500a0;
+  box-shadow: 0 0 0 2px rgba(21, 0, 160, 0.2);
 }
 
 .ingredients-list {

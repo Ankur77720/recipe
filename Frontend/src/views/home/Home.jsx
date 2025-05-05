@@ -11,7 +11,17 @@ const Home = () => {
     const [ ingredients, setIngredients ] = useState([]);
     const [ isSubmitting, setIsSubmitting ] = useState(false);
     const [ message, setMessage ] = useState('');
-    const [ recipe, setRecipe ] = useState(null)
+    const [ recipe, setRecipe ] = useState(null);
+    const [ dietGoal, setDietGoal ] = useState('balanced');
+
+    const dietGoalOptions = [
+        { value: 'balanced', label: 'Balanced Diet' },
+        { value: 'weight-gain', label: 'Weight Gain' },
+        { value: 'weight-loss', label: 'Weight Loss' },
+        { value: 'muscle-build', label: 'Muscle Building' },
+        { value: 'low-carb', label: 'Low Carb' },
+        { value: 'high-protein', label: 'High Protein' }
+    ];
 
     const handleAddIngredient = (e) => {
         e.preventDefault();
@@ -38,7 +48,8 @@ const Home = () => {
 
         try {
             const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/recipe/ingredients`, {
-                ingredients
+                ingredients,
+                dietGoal
             }, {
                 withCredentials: true
             });
@@ -77,6 +88,22 @@ const Home = () => {
                             <button type="submit">Add</button>
                         </div>
                     </form>
+
+                    <div className="diet-goal-selector">
+                        <label htmlFor="dietGoal">Select Diet Goal:</label>
+                        <select
+                            id="dietGoal"
+                            value={dietGoal}
+                            onChange={(e) => setDietGoal(e.target.value)}
+                            className="diet-goal-dropdown"
+                        >
+                            {dietGoalOptions.map((option) => (
+                                <option key={option.value} value={option.value}>
+                                    {option.label}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
 
                     {ingredients.length > 0 && (
                         <div className="ingredients-list">

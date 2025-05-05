@@ -2,7 +2,7 @@ import { getRecipeFromIngredients } from "../service/ai.service.js";
 
 export const submitIngredientsController = async (req, res) => {
     try {
-        const { ingredients } = req.body;
+        const { ingredients,dietGoal } = req.body;
 
         // Validate ingredients
         if (!ingredients || !Array.isArray(ingredients) || ingredients.length === 0) {
@@ -14,7 +14,10 @@ export const submitIngredientsController = async (req, res) => {
 
         // Here you would typically save the ingredients to a database
         // For now, we'll just log them and return a success response
-        const recipe = await getRecipeFromIngredients(ingredients);
+
+        console.log("Received ingredients:", ingredients);
+        
+        const recipe = await getRecipeFromIngredients(ingredients,dietGoal);
 
         // Return success response
         return res.status(200).json({

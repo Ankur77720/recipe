@@ -3,9 +3,11 @@ import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import indexRoutes from './routes/index.routes.js';
 import path from 'path';
+import morgan from 'morgan';
 
 
 const app = express();
+app.use(morgan('dev'));
 app.use(cors({
     origin: 'http://localhost:5173',
     credentials: true,
