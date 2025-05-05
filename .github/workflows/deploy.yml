@@ -1,0 +1,41 @@
+name: Build and Deploy to EC2
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Deploy to EC2
+      uses: appleboy/scp-action@v0.1.4
+      with:
+        host: ${{ secrets.EC2_HOST }}
+        username: ec2-user
+        key: ${{ secrets.EC2_KEY }}
+        source: ".,Backend/,Frontend/,Dockerfile"
+        target: "~/recipe-app"
+        strip_components: 0
+    
+    - name: SSH into EC2 & deploy
+      uses: appleboy/ssh-action@v1.0.0
+      with:
+        host: ${{ secrets.EC2_HOST }}
+        username: ec2-user
+        key: ${{ secrets.EC2_KEY }}
+        script: |
+          cd ~/recipe-app
+          docker build -t my-app .
+          docker stop my-app || true
+          docker rm my-app || true
+          docker run -d \
+            -e GOOGLE_GEMINI_KEY=${{ secrets.GOOGLE_GEMINI_KEY }} \
+            -e JWT_SECRET=${{ secrets.JWT_SECRET }} \
+            -e MONGO_URI=${{ secrets.MONGO_URI }} \
+            -e PORT=${{ secrets.PORT }} \
+            -p 3000:3000 --name my-app my-app

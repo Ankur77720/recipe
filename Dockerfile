@@ -21,8 +21,6 @@ COPY Backend/ ./
 COPY --from=frontend-builder /app/frontend/dist ./public
 
 
-
-
 EXPOSE 3000
 
 
