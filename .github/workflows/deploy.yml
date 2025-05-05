@@ -38,4 +38,4 @@ jobs:
             -e JWT_SECRET=${{ secrets.JWT_SECRET }} \
             -e MONGO_URI=${{ secrets.MONGO_URI }} \
             -e PORT=${{ secrets.PORT }} \
-            -p 3000:3000 --name my-app my-app
+            -p 3000:3000 my-app
