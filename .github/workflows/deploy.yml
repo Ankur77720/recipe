@@ -30,10 +30,10 @@ jobs:
         key: ${{ secrets.EC2_KEY }}
         script: |
           cd ~/recipe-app
-          docker build -t my-app .
-          docker stop my-app || true
-          docker rm my-app || true
-          docker run -d \
+          sudo docker build -t my-app .
+          sudo docker stop my-app || true
+          sudo docker rm my-app || true
+          sudo docker run -d \
             -e GOOGLE_GEMINI_KEY=${{ secrets.GOOGLE_GEMINI_KEY }} \
             -e JWT_SECRET=${{ secrets.JWT_SECRET }} \
             -e MONGO_URI=${{ secrets.MONGO_URI }} \
