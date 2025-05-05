@@ -16,7 +16,7 @@ const Login = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/user/login`, {
+        const response = await axios.post(`/api/v1/user/login`, {
             username,password
         },{
             withCredentials:true

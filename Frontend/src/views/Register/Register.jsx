@@ -17,7 +17,7 @@ const Register = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/user/register`, {
+        const response = await axios.post(`/api/v1/user/register`, {
             username,email,password
         },{
             withCredentials:true

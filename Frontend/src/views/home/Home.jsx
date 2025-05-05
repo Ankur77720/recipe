@@ -47,7 +47,7 @@ const Home = () => {
         setMessage('');
 
         try {
-            const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/recipe/ingredients`, {
+            const response = await axios.post(`/api/v1/recipe/ingredients`, {
                 ingredients,
                 dietGoal
             }, {

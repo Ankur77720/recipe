@@ -18,7 +18,7 @@ const Authenticate = ({ children }) => {
       return
     }
 
-    axios.get(`${import.meta.env.VITE_BACKEND_URL}/user/me`, {
+    axios.get(`/api/v1/user/me`, {
       withCredentials: true
     })
       .then((response) => {
